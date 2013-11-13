@@ -354,6 +354,7 @@ class sfToolkit
   /**
    * Returns subject replaced with regular expression matchs
    *
+   * @deprecated since PHP 5.5
    * @param mixed $search        subject to search
    * @param array $replacePairs  array of search => replace pairs
    */

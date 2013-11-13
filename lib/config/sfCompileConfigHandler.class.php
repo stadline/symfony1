@@ -62,8 +62,8 @@ class sfCompileConfigHandler extends sfYamlConfigHandler
                                         array($this, 'insertConfigFileCallback'), $contents);
 */
       // strip php tags
-      $contents = sfToolkit::pregtr($contents, array('/^\s*<\?(php)?/m' => '',
-                                                     '/^\s*\?>/m'       => ''));
+      $contents = preg_replace('/^\s*<\?(php)?/m', '', $contents);
+      $contents = preg_replace('/^\s*\?>/m', '', $contents);
 
       // replace windows and mac format with unix format
       $contents = str_replace("\r", "\n", $contents);

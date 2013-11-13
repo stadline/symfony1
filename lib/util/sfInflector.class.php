@@ -28,8 +28,8 @@ class sfInflector
   public static function camelize($lower_case_and_underscored_word)
   {
     $tmp = $lower_case_and_underscored_word;
-    $tmp = sfToolkit::pregtr($tmp, array('#/(.?)#e'    => "'::'.strtoupper('\\1')",
-                                         '/(^|_|-)+(.)/e' => "strtoupper('\\2')"));
+    $tmp = preg_replace('#/(.?)#e', "'::'.strtoupper('\\1')", $tmp);
+    $tmp = preg_replace('/(^|_|-)+(.)/e', "strtoupper('\\2')", $tmp);
 
     return $tmp;
   }
@@ -45,8 +45,8 @@ class sfInflector
   {
     $tmp = $camel_cased_word;
     $tmp = str_replace('::', '/', $tmp);
-    $tmp = sfToolkit::pregtr($tmp, array('/([A-Z]+)([A-Z][a-z])/' => '\\1_\\2',
-                                         '/([a-z\d])([A-Z])/'     => '\\1_\\2'));
+    $tmp = preg_replace('/([A-Z]+)([A-Z][a-z])/', '\\1_\\2', $tmp);
+    $tmp = preg_replace('/([a-z\d])([A-Z])/', '\\1_\\2', $tmp);
 
     return strtolower($tmp);
   }
