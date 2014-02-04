@@ -18,7 +18,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
  * @author     Dustin Whittle <dustin.whittle@symfony-project.com>
- * @version    SVN: $Id: sfPDODatabase.class.php 33486 2012-07-09 08:57:29Z fabien $
+ * @version    SVN: $Id$
  */
 class sfPDODatabase extends sfDatabase
 {

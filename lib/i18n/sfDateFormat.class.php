@@ -12,7 +12,7 @@
  * {@link http://prado.sourceforge.net/}
  *
  * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version    $Id: sfDateFormat.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ * @version    $Id$
  * @package    symfony
  * @subpackage i18n
  */

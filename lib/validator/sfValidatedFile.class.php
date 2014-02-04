@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfValidatedFile.class.php 30915 2010-09-15 17:10:37Z Kris.Wallsmith $
+ * @version    SVN: $Id$
  */
 class sfValidatedFile
 {
@@ -216,6 +216,19 @@ class sfValidatedFile
   public function getType()
   {
     return $this->type;
+  }
+
+  /**
+   * Reset type
+   *
+   * @param string $type
+   * @return sfValidatedFile
+   */
+  public function resetType($type)
+  {
+    $this->type = $type;
+
+    return $this;
   }
 
   /**

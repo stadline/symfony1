@@ -16,7 +16,7 @@
  * @subpackage controller
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfController.class.php 33539 2012-09-19 05:36:02Z fabien $
+ * @version    SVN: $Id$
  */
 abstract class sfController
 {

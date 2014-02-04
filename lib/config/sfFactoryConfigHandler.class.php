@@ -17,7 +17,7 @@
  * @subpackage config
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfFactoryConfigHandler.class.php 33299 2011-12-30 17:42:47Z fabien $
+ * @version    SVN: $Id$
  */
 class sfFactoryConfigHandler extends sfYamlConfigHandler
 {
@@ -41,7 +41,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
     $instances = array();
 
     // available list of factories
-    $factories = array('view_cache_manager', 'logger', 'i18n', 'controller', 'request', 'response', 'routing', 'storage', 'user', 'view_cache', 'mailer');
+    $factories = array('view_cache_manager', 'logger', 'i18n', 'controller', 'request', 'response', 'routing', 'storage', 'user', 'view_cache', 'mailer', 'service_container');
 
     // let's do our fancy work
     foreach ($factories as $factory)
@@ -217,12 +217,21 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
 
         case 'mailer':
           $instances[] = sprintf(
-                        "require_once sfConfig::get('sf_symfony_lib_dir').'/vendor/swiftmailer/classes/Swift.php';\n".
-                        "Swift::registerAutoload();\n".
-                        "sfMailer::initialize();\n".
+                        "if (!class_exists('Swift')) {\n".
+                        "  \$swift_dir = sfConfig::get('sf_swiftmailer_dir', sfConfig::get('sf_symfony_lib_dir').'/vendor/swiftmailer/lib');\n".
+                        "  require_once \$swift_dir.'/classes/Swift.php';\n".
+                        "  Swift::registerAutoload(\$swift_dir.'/swift_init.php');\n".
+                        "}\n".
                         "\$this->setMailerConfiguration(array_merge(array('class' => sfConfig::get('sf_factory_mailer', '%s')), sfConfig::get('sf_factory_mailer_parameters', %s)));\n"
-                         , $class, var_export($parameters, true));
+                        , $class, var_export($parameters, true));
           break;
+
+        case 'service_container':
+          $instances[] = (
+                        "\$class = require \$this->configuration->getConfigCache()->checkConfig('config/services.yml', true);\n".
+                        "\$this->setServiceContainerConfiguration(array('class' => \$class));\n"
+                        );
+        break;
       }
     }
 

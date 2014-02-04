@@ -16,7 +16,7 @@
  * @package    symfony
  * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfValidatorSchema.class.php 22446 2009-09-26 07:55:47Z fabien $
+ * @version    SVN: $Id$
  */
 class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
 {
@@ -110,7 +110,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     $errorSchema = new sfValidatorErrorSchema($this);
 
     // check that post_max_size has not been reached
-    if (isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > $this->getBytes(ini_get('post_max_size')))
+    if (isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > $this->getBytes(ini_get('post_max_size')) && ini_get('post_max_size') != 0)
     {
       $errorSchema->addError(new sfValidatorError($this, 'post_max_size'));
 
@@ -120,7 +120,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     // pre validator
     try
     {
-      $this->preClean($values);
+      $values = $this->preClean($values);
     }
     catch (sfValidatorErrorSchema $e)
     {
@@ -161,6 +161,12 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
         $clean[$name] = null;
 
         $errorSchema->addError($e, (string) $name);
+      }
+      catch (Exception $e)
+      {
+        $class = get_class($e);
+
+        throw new $class($e->getMessage().' of "'.$name.'" field');
       }
     }
 
@@ -212,16 +218,18 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
    *
    * @param  array $values  The input values
    *
+   * @return array The cleaned values
+   *
    * @throws sfValidatorError
    */
   public function preClean($values)
   {
     if (null === $validator = $this->getPreValidator())
     {
-      return;
+      return $values;
     }
 
-    $validator->clean($values);
+    return $validator->clean($values);
   }
 
   /**
@@ -328,7 +336,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
   {
     if (!$validator instanceof sfValidatorBase)
     {
-      throw new InvalidArgumentException('A field must be an instance of sfValidatorBase.');
+      throw new InvalidArgumentException('A validator must be an instance of sfValidatorBase.');
     }
 
     $this->fields[$name] = clone $validator;

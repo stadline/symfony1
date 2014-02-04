@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: UrlHelper.php 31396 2010-11-15 16:08:26Z fabien $
+ * @version    SVN: $Id$
  */
 
 /**

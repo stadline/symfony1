@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage widget
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWidgetFormSelectCheckbox.class.php 33362 2012-03-08 13:53:08Z fabien $
+ * @version    SVN: $Id$
  */
 class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
 {

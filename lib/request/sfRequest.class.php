@@ -18,7 +18,7 @@
  * @subpackage request
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfRequest.class.php 28641 2010-03-21 10:20:44Z fabien $
+ * @version    SVN: $Id$
  */
 abstract class sfRequest implements ArrayAccess
 {
@@ -79,6 +79,18 @@ abstract class sfRequest implements ArrayAccess
 
     $this->parameterHolder->add($parameters);
     $this->attributeHolder->add($attributes);
+  }
+
+  /**
+   * Return an option value or null if option does not exists
+   *
+   * @param string $name The option name.
+   *
+   * @return mixed The option value
+   */
+  public function getOption($name)
+  {
+    return isset($this->options[$name]) ? $this->options[$name] : null;
   }
 
   /**

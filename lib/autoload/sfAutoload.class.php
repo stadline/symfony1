@@ -17,7 +17,7 @@
  * @package    symfony
  * @subpackage autoload
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfAutoload.class.php 23205 2009-10-20 13:20:17Z Kris.Wallsmith $
+ * @version    SVN: $Id$
  */
 class sfAutoload
 {
@@ -124,7 +124,7 @@ class sfAutoload
     }
 
     self::$freshCache = true;
-    if (file_exists($configuration->getConfigCache()->getCacheName('config/autoload.yml')))
+    if (is_file($configuration->getConfigCache()->getCacheName('config/autoload.yml')))
     {
       self::$freshCache = false;
       if ($force)

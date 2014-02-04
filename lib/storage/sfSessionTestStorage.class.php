@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage storage
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfSessionTestStorage.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ * @version    SVN: $Id$
  */
 class sfSessionTestStorage extends sfStorage
 {
@@ -52,7 +52,7 @@ class sfSessionTestStorage extends sfStorage
     {
       // we read session data from temp file
       $file = $this->options['session_path'].DIRECTORY_SEPARATOR.$this->sessionId.'.session';
-      $this->sessionData = file_exists($file) ? unserialize(file_get_contents($file)) : array();
+      $this->sessionData = is_file($file) ? unserialize(file_get_contents($file)) : array();
     }
     else
     {
