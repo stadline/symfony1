@@ -144,7 +144,7 @@ class Doctrine_Template_Listener_SoftDelete extends Doctrine_Record_Listener
         // 2 - We are in the subquery and it defines the component with that alias
         if (( ! $query->isSubquery() || ($query->isSubquery() && $query->contains(' ' . $params['alias'] . ' '))) && ! $query->contains($field)) {
             if ($this->_options['type'] == 'timestamp') {
-                $query->addPendingJoinCondition($params['alias'], $field . ' IS NULL');
+                $query->addPendingJoinCondition($params['alias'], $field . ' IS NULL OR ' . $field . ' > ' . $query->getConnection()->quote(date('Y-m-d H:i:s', time())));
             } else if ($this->_options['type'] == 'boolean') {
                 $query->addPendingJoinCondition(
                     $params['alias'], $field . ' = ' . $query->getConnection()->convertBooleans(false)
