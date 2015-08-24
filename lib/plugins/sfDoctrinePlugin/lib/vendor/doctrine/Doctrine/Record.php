@@ -1369,6 +1369,17 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
             } else {
                 $value = $this->_data[$fieldName];
             }
+
+            // fix identifier column accessors
+            try {
+                $rel = $this->_table->getRelation($fieldName);
+            } catch(Exception $e) {
+                $rel = false;
+            }
+
+            if ($value instanceof Doctrine_Record && !$rel) {
+                return $value->isNew() ? null : $value;
+            }
             
             return $value;
         }
