@@ -186,12 +186,12 @@ abstract class sfPluginConfiguration
     }
     else if ($task instanceof sfTestFunctionalTask)
     {
-      $directory = $this->rootDir.'/test/functional';
+      $directory = $this->rootDir.'/test/functional/'.$event['arguments']['application'];
       $names = $event['arguments']['controller'];
     }
     else if ($task instanceof sfTestUnitTask)
     {
-      $directory = $this->rootDir.'/test/unit';
+      $directory = $this->rootDir.'/test/unit/'.$event['arguments']['application'];
       $names = $event['arguments']['name'];
     }
 
@@ -203,7 +203,12 @@ abstract class sfPluginConfiguration
     foreach ($names as $name)
     {
       $finder = sfFinder::type('file')->follow_link()->name(basename($name).'Test.php');
-      $files = array_merge($files, $finder->in($directory.'/'.dirname($name)));
+      foreach ($finder->in($directory.'/'.dirname($name)) as $pluginFile) {
+        $projectFile = sfConfig::get('sf_root_dir').mb_substr($pluginFile, mb_strlen($this->rootDir));
+        if (!in_array($projectFile, $files)) {
+          $files[] = $pluginFile;
+        }
+      }
     }
 
     return array_unique($files);
