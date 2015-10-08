@@ -104,7 +104,7 @@ class lime_test
       foreach ($result['tests'] as $test)
       {
         $testsuite->appendChild($testcase = $dom->createElement('testcase'));
-        $testcase->setAttribute('name', $test['message']);
+        $testcase->setAttribute('name', utf8_encode($test['message']));
         $testcase->setAttribute('file', $test['file']);
         $testcase->setAttribute('line', $test['line']);
         $testcase->setAttribute('assertions', 1);
@@ -530,13 +530,18 @@ class lime_test
     $this->results['tests'][$this->test_nb]['error'] = implode("\n", $errors);
   }
 
+  private function is_test_object($object)
+  {
+    return $object instanceof lime_test || $object instanceof sfTestFunctionalBase || $object instanceof sfTester;
+  }
+
   protected function find_caller($traces)
   {
     // find the first call to a method of an object that is an instance of lime_test
     $t = array_reverse($traces);
     foreach ($t as $trace)
     {
-      if (isset($trace['object']) && $trace['object'] instanceof lime_test)
+      if (isset($trace['object']) && $this->is_test_object($trace['object']))
       {
         return array($trace['file'], $trace['line']);
       }
@@ -811,6 +816,7 @@ class lime_harness extends lime_registration
   public $php_cli = null;
   public $stats   = array();
   public $output  = null;
+  public $full_output = false;
 
   public function __construct($options = array())
   {
@@ -973,7 +979,14 @@ EOF
         }
       }
 
-      $this->output->echoln(sprintf('%s%s%s', substr($relative_file, -min(67, strlen($relative_file))), str_repeat('.', 70 - min(67, strlen($relative_file))), $stats['status']));
+      if (true === $this->full_output)
+      {
+        $this->output->echoln(sprintf('%s%s%s', $relative_file, '.....', $stats['status']));
+      }
+      else
+      {
+        $this->output->echoln(sprintf('%s%s%s', substr($relative_file, -min(67, strlen($relative_file))), str_repeat('.', 70 - min(67, strlen($relative_file))), $stats['status']));
+      }
 
       if ('dubious' == $stats['status'])
       {
