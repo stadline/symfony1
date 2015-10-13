@@ -191,7 +191,7 @@ abstract class sfPluginConfiguration
     }
     else if ($task instanceof sfTestUnitTask)
     {
-      $directory = $this->rootDir.'/test/unit/'.$event['arguments']['application'];
+      $directory = $this->rootDir.'/test/unit';
       $names = $event['arguments']['name'];
     }
 
