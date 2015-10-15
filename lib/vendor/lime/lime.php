@@ -134,6 +134,7 @@ class lime_test
     $plan = $this->results['stats']['plan'];
     $passed = count($this->results['stats']['passed']);
     $failed = count($this->results['stats']['failed']);
+    $errors = count($this->results['stats']['errors']);
     $total = $this->results['stats']['total'];
     is_null($plan) and $plan = $total and $this->output->echoln(sprintf("1..%d", $plan));
 
@@ -149,6 +150,10 @@ class lime_test
     if ($failed)
     {
       $this->output->red_bar(sprintf("# Looks like you failed %d tests of %d.", $failed, $passed + $failed));
+    }
+    else if ($errors)
+    {
+      $this->output->red_bar(sprintf("# Looks like there were %d errors", $errors));
     }
     else if ($total == $plan)
     {
