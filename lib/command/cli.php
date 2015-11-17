@@ -11,16 +11,10 @@
 require_once(dirname(__FILE__).'/../autoload/sfCoreAutoload.class.php');
 sfCoreAutoload::register();
 
-try
+function cli_exception_handler(Exception $e)
 {
-  $dispatcher = new sfEventDispatcher();
-  $logger = new sfCommandLogger($dispatcher);
+  global $application;
 
-  $application = new sfSymfonyCommandApplication($dispatcher, null, array('symfony_lib_dir' => realpath(dirname(__FILE__).'/..')));
-  $statusCode = $application->run();
-}
-catch (Exception $e)
-{
   if (!isset($application))
   {
     throw $e;
@@ -31,5 +25,13 @@ catch (Exception $e)
 
   exit(is_numeric($statusCode) && $statusCode ? $statusCode : 1);
 }
+
+set_exception_handler('cli_exception_handler');
+
+$dispatcher = new sfEventDispatcher();
+$logger = new sfCommandLogger($dispatcher);
+
+$application = new sfSymfonyCommandApplication($dispatcher, null, array('symfony_lib_dir' => realpath(__DIR__.'/..')));
+$statusCode = $application->run();
 
 exit(is_numeric($statusCode) ? $statusCode : 0);
