@@ -2115,19 +2115,21 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable, Seriali
             }
         }
 
-        // Run all custom validators
-        foreach ($this->getFieldValidators($fieldName) as $validatorName => $args) {
-            if ( ! is_string($validatorName)) {
-                $validatorName = $args;
-                $args = array();
-            }
+        // Run all custom validators, if constraint validation is enabled
+        if ($this->getAttribute(Doctrine_Core::ATTR_VALIDATE) & Doctrine_Core::VALIDATE_CONSTRAINTS) {
+            foreach ($this->getFieldValidators($fieldName) as $validatorName => $args) {
+                if ( ! is_string($validatorName)) {
+                    $validatorName = $args;
+                    $args = array();
+                }
 
-            $validator = Doctrine_Validator::getValidator($validatorName);
-            $validator->invoker = $record;
-            $validator->field = $fieldName;
-            $validator->args = $args;
-            if ( ! $validator->validate($value)) {
-                $errorStack->add($fieldName, $validator);
+                $validator = Doctrine_Validator::getValidator($validatorName);
+                $validator->invoker = $record;
+                $validator->field = $fieldName;
+                $validator->args = $args;
+                if ( ! $validator->validate($value)) {
+                    $errorStack->add($fieldName, $validator);
+                }
             }
         }
 
