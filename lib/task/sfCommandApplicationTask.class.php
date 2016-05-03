@@ -192,6 +192,9 @@ abstract class sfCommandApplicationTask extends sfTask
    */
   protected function getServiceContainer()
   {
+    if(sfContext::hasInstance()){
+      return sfContext::getInstance()->getServiceContainer();
+    }
     if (null === $this->serviceContainer)
     {
       $class = require $this->configuration->getConfigCache()->checkConfig('config/services.yml', true);
