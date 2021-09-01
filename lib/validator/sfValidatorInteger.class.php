@@ -40,7 +40,9 @@ class sfValidatorInteger extends sfValidatorBase
   {
     $this->addMessage('max', '"%value%" must be at most %max%.');
     $this->addMessage('min', '"%value%" must be at least %min%.');
+    $this->addMessage('max_length', '"%value%" is too long (%max_length% characters max).');
 
+    $this->addOption('max_length');
     $this->addOption('min');
     $this->addOption('max');
 
@@ -57,6 +59,11 @@ class sfValidatorInteger extends sfValidatorBase
     if (strval($clean) != $value)
     {
       throw new sfValidatorError($this, 'invalid', array('value' => $value));
+    }
+
+    if ($this->hasOption('max_length') && strlen($clean) > $this->getOption('max_length'))
+    {
+      throw new sfValidatorError($this, 'max_length', array('value' => $value, 'max_length' => $this->getOption('max_length')));
     }
 
     if ($this->hasOption('max') && $clean > $this->getOption('max'))
