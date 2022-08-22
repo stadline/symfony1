@@ -372,6 +372,7 @@ class Doctrine_Transaction extends Doctrine_Connection_Module
      * @param string $savepoint     name of a savepoint to create
      * @return void
      */
+    #[ReturnTypeWillChange]
     protected function createSavePoint($savepoint)
     {
         throw new Doctrine_Transaction_Exception('Savepoints not supported by this driver.');

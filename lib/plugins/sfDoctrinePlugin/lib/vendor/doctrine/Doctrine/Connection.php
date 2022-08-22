@@ -1151,7 +1151,7 @@ abstract class Doctrine_Connection extends Doctrine_Configurable implements Coun
      *
      * @return ArrayIterator        SPL ArrayIterator object
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->tables);
     }
@@ -1161,7 +1161,7 @@ abstract class Doctrine_Connection extends Doctrine_Configurable implements Coun
      *
      * @return integer
      */
-    public function count()
+    public function count(): int
     {
         return $this->_count;
     }
@@ -1552,6 +1552,16 @@ abstract class Doctrine_Connection extends Doctrine_Configurable implements Coun
     public function __toString()
     {
         return Doctrine_Lib::getConnectionAsString($this);
+    }
+
+    public function __serialize()
+    {
+        return $this->serialize();
+    }
+
+    public function __unserialize($data)
+    {
+        return $this->unserialize($data);
     }
 
     /**

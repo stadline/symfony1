@@ -284,7 +284,7 @@ class Doctrine_Query extends Doctrine_Query_Abstract implements Countable
             return $collection;
         }
 
-        if (count($collection) === 0) {
+        if (is_countable($collection) && count($collection) === 0) {
             return false;
         }
 
@@ -2127,7 +2127,7 @@ class Doctrine_Query extends Doctrine_Query_Abstract implements Countable
      * @param array $params        an array of prepared statement parameters
      * @return integer             the count of this query
      */
-    public function count($params = array())
+    public function count($params = array()): int
     {
         $q = $this->getCountSqlQuery();
         $params = $this->getCountQueryParams($params);

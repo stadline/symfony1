@@ -287,7 +287,7 @@ class Doctrine_Connection_Statement implements Doctrine_Adapter_Statement_Interf
      *                                      you must set the Doctrine_Core::ATTR_CURSOR attribute to Doctrine_Core::CURSOR_SCROLL when you
      *                                      prepare the SQL statement with Doctrine_Adapter_Interface->prepare().
      *
-     * @param integer $cursorOffset         For a Doctrine_Adapter_Statement_Interface object representing a scrollable cursor for which the
+     * @param $cursorOffset         For a Doctrine_Adapter_Statement_Interface object representing a scrollable cursor for which the
      *                                      $cursorOrientation parameter is set to Doctrine_Core::FETCH_ORI_ABS, this value specifies
      *                                      the absolute number of the row in the result set that shall be fetched.
      *
@@ -300,8 +300,9 @@ class Doctrine_Connection_Statement implements Doctrine_Adapter_Statement_Interf
      */
     public function fetch($fetchMode = Doctrine_Core::FETCH_BOTH,
                           $cursorOrientation = Doctrine_Core::FETCH_ORI_NEXT,
-                          $cursorOffset = null)
+                          $cursorOffset = 0)
     {
+        // @todo $cursorOffset defaulted on null
         $event = new Doctrine_Event($this, Doctrine_Event::STMT_FETCH, $this->getQuery());
 
         $event->fetchMode = $fetchMode;

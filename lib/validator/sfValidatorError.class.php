@@ -126,6 +126,16 @@ class sfValidatorError extends Exception implements Serializable
     return $messageFormat;
   }
 
+    public function __serialize()
+    {
+        return $this->serialize();
+  }
+
+    public function __unserialize($data)
+    {
+        $this->unserialize($data);
+  }
+
   /**
    * Serializes the current instance.
    *

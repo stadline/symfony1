@@ -136,7 +136,7 @@ class sfEvent implements ArrayAccess
       throw new InvalidArgumentException(sprintf('The event "%s" has no "%s" parameter.', $this->name, $name));
     }
 
-    return $this->parameters[$name];
+    return $this->parameters[$offset];
   }
 
   /**
@@ -155,7 +155,7 @@ class sfEvent implements ArrayAccess
    *
    * @param string $name    The parameter name
    */
-  public function offsetUnset($name)
+  public function offsetUnset(mixed $name): void
   {
     unset($this->parameters[$name]);
   }

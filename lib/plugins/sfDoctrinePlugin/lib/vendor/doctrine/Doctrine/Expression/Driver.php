@@ -48,6 +48,7 @@ class Doctrine_Expression_Driver extends Doctrine_Connection_Module
      *
      * @return string
      */
+    #[ReturnTypeWillChange]
     public function regexp()
     {
         throw new Doctrine_Expression_Exception('Regular expression operator is not supported by this database driver.');

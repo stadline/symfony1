@@ -68,9 +68,9 @@ class Doctrine_Tree
 
     /**
      * Used to define table attributes required for the given implementation
-     *
      * @throws Doctrine_Tree_Exception          if table attributes have not been defined
      */
+    #[\ReturnTypeWillChange]
     public function setTableDefinition()
     {
         throw new Doctrine_Tree_Exception('Table attributes have not been defined for this Tree implementation.');

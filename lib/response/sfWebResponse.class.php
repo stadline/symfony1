@@ -819,6 +819,16 @@ class sfWebResponse extends sfResponse
     $this->slots = array_merge($this->getSlots(), $response->getSlots());
   }
 
+    public function __serialize()
+    {
+        return $this->serialize();
+    }
+
+    public function __unserialize($data)
+    {
+        return $this->unserialize($data);
+    }
+
   /**
    * @see sfResponse
    */

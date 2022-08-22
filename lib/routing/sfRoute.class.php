@@ -840,17 +840,33 @@ class sfRoute implements Serializable
     }
   }
 
-  public function serialize()
+    /**
+     * @internal
+     */
+    final public function serialize(): string
+    {
+        throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
+    }
+
+  public function __serialize(): array
   {
     // always serialize compiled routes
     $this->compile();
     // sfPatternRouting will always re-set defaultParameters, so no need to serialize them
-    return serialize(array($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken));
+    return array($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken);
   }
 
-  public function unserialize($data)
+    /**
+     * @internal
+     */
+    final public function unserialize(string $serialized)
+    {
+        $this->__unserialize(unserialize($serialized));
+    }
+
+  public function __unserialize(array $data): void
   {
-    list($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken) = unserialize($data);
+    list($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken) = $data;
     $this->compiled = true;
   }
 }

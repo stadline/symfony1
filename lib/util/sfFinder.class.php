@@ -378,11 +378,15 @@ class sfFinder
         $dir = $here_dir.'/'.$dir;
       }
 
-      $new_files = str_replace('\\', '/', $finder->search_in($dir));
+      $new_files = $finder->search_in($dir);
 
-      if ($this->relative)
-      {
-        $new_files = preg_replace('#^'.preg_quote(rtrim($dir, '/'), '#').'/#', '', $new_files);
+      foreach ($new_files as &$new_file) {
+          $new_file = str_replace('\\', '/', $new_file);
+
+          if ($this->relative)
+          {
+              $new_file = preg_replace('#^'.preg_quote(rtrim($dir, '/'), '#').'/#', '', $new_file);
+          }
       }
 
       $files = array_merge($files, $new_files);

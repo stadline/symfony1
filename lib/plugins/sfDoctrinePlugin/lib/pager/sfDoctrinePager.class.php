@@ -45,6 +45,16 @@ class sfDoctrinePager extends sfPager implements Serializable
     $this->tableMethodName = $tableMethodName;
   }
 
+    public function __serialize()
+    {
+        return $this->serialize();
+    }
+
+    public function __unserialize($data)
+    {
+        $this->unserialize($data);
+    }
+
   /**
    * Serialize the pager object
    *
