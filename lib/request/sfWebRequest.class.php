@@ -802,7 +802,14 @@ class sfWebRequest extends sfRequest
 
   static protected function fixPhpFilesArray($data)
   {
-    $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
+    //Fix PHP8, et ajout de full_path
+    if(method_exists(sfContext::getInstance()->getConfiguration(), 'fileKeys')){
+      $fileKeys = sfContext::getInstance()->getConfiguration()->fileKeys();
+    }
+    else{
+      $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
+    }
+
     $keys = array_keys($data);
     sort($keys);
 
