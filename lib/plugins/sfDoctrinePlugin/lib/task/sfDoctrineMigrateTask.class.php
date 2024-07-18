@@ -98,29 +98,28 @@ EOF;
     }
 
     $this->logSection('doctrine', sprintf('Migrating from version %s to %s%s', $from, $version, $options['dry-run'] ? ' (dry run)' : ''));
-    try
-    {
+
       $migration_classes = $migration->getMigrationClasses();
-      if($version < $from)
-      {
-        for($i = (int)$from - 1; $i >= (int)$version; $i--)
-        {
-          $this->logSection('doctrine', 'executing migration : '.$i .', class: '.$migration_classes[$i]);
-          $migration->migrate($i, $options['dry-run']);
-        }
+      if ($version < $from) {
+          for ($i = (int)$from - 1; $i >= (int)$version; $i--) {
+              $this->logSection('doctrine', 'executing migration : ' . $i . ', class: ' . $migration_classes[$i]);
+              try {
+                  $migration->migrate($i, $options['dry-run']);
+              }
+              catch (Exception $e) {
+              }
+          }
       }
-      else
-      {
-        for($i = (int)$from + 1; $i <= (int)$version; $i++)
-        {
-          $this->logSection('doctrine', 'executing migration : '.$i.', class: '.$migration_classes[$i]);
-          $migration->migrate($i, $options['dry-run']);
-        }
+      else {
+          for ($i = (int)$from + 1; $i <= (int)$version; $i++) {
+              $this->logSection('doctrine', 'executing migration : ' . $i . ', class: ' . $migration_classes[$i]);
+              try {
+                  $migration->migrate($i, $options['dry-run']);
+              }
+              catch (Exception $e) {
+              }
+          }
       }
-    }
-    catch (Exception $e)
-    {
-    }
 
     // render errors
     if ($migration->hasErrors())
