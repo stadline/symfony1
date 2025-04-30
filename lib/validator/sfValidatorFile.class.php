@@ -58,20 +58,18 @@ class sfValidatorFile extends sfValidatorBase
     }
 
     $this->addOption('max_size');
-    $this->addOption('mime_types');
+      $this->addOption('mime_types', array(
+          'image/jpeg',
+          'image/pjpeg',
+          'image/png',
+          'image/x-png',
+          'image/gif',
+      ));
     $this->addOption('mime_type_guessers', array(
       array($this, 'guessFromFileinfo'),
       array($this, 'guessFromMimeContentType'),
       array($this, 'guessFromFileBinary'),
     ));
-    $this->addOption('mime_categories', array(
-      'web_images' => array(
-        'image/jpeg',
-        'image/pjpeg',
-        'image/png',
-        'image/x-png',
-        'image/gif',
-    )));
     $this->addOption('validated_file_class', 'sfValidatedFile');
     $this->addOption('path', null);
 
@@ -161,6 +159,13 @@ class sfValidatorFile extends sfValidatorBase
         throw new sfValidatorError($this, 'mime_types', array('mime_types' => $mimeTypes, 'mime_type' => $mimeType));
       }
     }
+
+      // Vérification de l'extension du fichier
+      $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
+      $extension = strtolower(pathinfo($value['name'], PATHINFO_EXTENSION));
+      if (!in_array($extension, $allowedExtensions)) {
+          throw new sfValidatorError($this, 'invalid_extension', array('extension' => $extension));
+      }
 
     $class = $this->getOption('validated_file_class');
 
