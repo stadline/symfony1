@@ -57,6 +57,8 @@ class sfValidatorFile extends sfValidatorBase
       throw new LogicException(sprintf('Unable to use a file validator as "file_uploads" is disabled in your php.ini file (%s)', get_cfg_var('cfg_file_path')));
     }
 
+    $this->addOption('allowed_extensions', ['jpg', 'jpeg', 'png', 'gif']);
+
     $this->addOption('max_size');
       $this->addOption('mime_types', array(
           'image/jpeg',
@@ -169,12 +171,12 @@ class sfValidatorFile extends sfValidatorBase
       }
     }
 
-      // Vérification de l'extension du fichier
-      $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
-      $extension = strtolower(pathinfo($value['name'], PATHINFO_EXTENSION));
-      if (!in_array($extension, $allowedExtensions)) {
-          throw new sfValidatorError($this, 'invalid_extension', array('extension' => $extension));
-      }
+    // Vérification de l'extension du fichier
+    $extension = strtolower(pathinfo($value['name'], PATHINFO_EXTENSION));
+    if (!in_array($extension, $this->getOption('allowed_extensions'))) {
+      throw new sfValidatorError($this, 'invalid_extension', array('extension' => $extension));
+    }
+
 
     $class = $this->getOption('validated_file_class');
 
