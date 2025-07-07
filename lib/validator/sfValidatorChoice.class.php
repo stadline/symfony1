@@ -59,6 +59,8 @@ class sfValidatorChoice extends sfValidatorBase
     {
       if (!self::inChoices($value, $choices))
       {
+          var_dump($value);
+          var_dump($choices);exit();
         throw new sfValidatorError($this, 'invalid', array('value' => $value));
       }
     }
