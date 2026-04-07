@@ -810,10 +810,17 @@ class sfWebRequest extends sfRequest
       $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
     }
 
+    // PHP 8.1+ adds full_path to $_FILES - include it when present
+    if (isset($data['full_path'])) {
+      $fileKeys[] = 'full_path';
+    }
+
     $keys = array_keys($data);
     sort($keys);
+    $sortedFileKeys = $fileKeys;
+    sort($sortedFileKeys);
 
-    if ($fileKeys != $keys || !isset($data['name']) || !is_array($data['name']))
+    if ($sortedFileKeys != $keys || !isset($data['name']) || !is_array($data['name']))
     {
       return $data;
     }
@@ -825,13 +832,17 @@ class sfWebRequest extends sfRequest
     }
     foreach (array_keys($data['name']) as $key)
     {
-      $files[$key] = self::fixPhpFilesArray(array(
+      $fileData = array(
         'error'    => $data['error'][$key],
         'name'     => $data['name'][$key],
         'type'     => $data['type'][$key],
         'tmp_name' => $data['tmp_name'][$key],
         'size'     => $data['size'][$key],
-      ));
+      );
+      if (isset($data['full_path'])) {
+        $fileData['full_path'] = $data['full_path'][$key];
+      }
+      $files[$key] = self::fixPhpFilesArray($fileData);
     }
 
     return $files;
